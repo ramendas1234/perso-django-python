@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+{% load staticfiles %}
+{% block body %}
+
+
+	<div class="container">
+		<h3 class="text-center" style="margin-bottom: 15px;">{{ category_name }}</h3>
+	<div class="row">
+
+			{% for article in latest_blogs %}
+			<div class="col-sm-4">
+				<div class="inner-box">
+					<a href="{{ article.get_absolute_url }}"><img src="/{{ article.blog_image.url }}" class="img-thumbnail"></a>
+					<div class="car-block">
+						<h1 class="text-center posttitle"> <a class="truncate_content"  href="{{ article.get_absolute_url }}">{{ article.title }}</a></h1>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+ 
+	</div>
+{% endblock %}

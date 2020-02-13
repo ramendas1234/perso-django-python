@@ -1,0 +1,102 @@
+{% extends "base_generic.html" %}
+{% load staticfiles %}
+{% block body %}
+	<!-- featured post -->
+<section>
+	<h2>Blog Categories</h2>
+	<p>{{ ip_test }}</p>
+	<p>{{ browser }}</p>
+  <div class="container-fluid p-sm-0">
+    <div class="row featured-post-slider">
+
+{% if blog_categories %}
+	{% for blog_catg in blog_categories %}
+      <div class="col-lg-3 col-sm-6 mb-2 mb-lg-0 px-1">
+        <article class="card bg-dark text-center text-white border-0 rounded-0">
+          <img class="card-img rounded-0 img-fluid w-100" src="/{{ blog_catg.category_image.url }}" alt="post-thumb" style="height: 300px;">
+          <div class="card-img-overlay">
+            <div class="card-content">
+              <p class="text-uppercase">Number of blogs:{{ blog_catg.blog_set.count }}</p>
+              <h4 class="card-title mb-4"><a class="text-white" href="{% url 'categories-list' blog_catg.id %}">{{ blog_catg.name }}</a></h4>
+              <a class="btn btn-outline-light" href="{% url 'categories-list' blog_catg.id %}">View All</a>
+            </div>
+          </div>
+        </article>
+      </div>
+      {% endfor %}
+{% else %}
+
+{% endif %}      
+      
+    </div>
+  </div>
+</section>
+<!-- /featured post -->
+{{ latest_blogs }}
+<!-- blog post -->
+<section class="section">
+  <div class="container">
+    <div class="row masonry-container">
+    {% if latest_blogs %}	
+    	{% for single_blog in latest_blogs %}
+      <div class="col-lg-4 col-sm-6 mb-5">
+        <article class="text-center">
+          <a href="{{ single_blog.get_absolute_url }}">
+            <img class="img-fluid mb-4 perso-thumbnail" src="/{{ single_blog.blog_image.url }}" alt="post-thumb">
+          </a>
+          <p class="text-uppercase mb-2"><a href="javascript:void(0);">{{ single_blog.category.all|join:", " }}</a></p>
+          <h4 class="title-border"><a class="text-dark" href="{{ single_blog.get_absolute_url }}">{{ single_blog.title }}</a></h4>
+          <p>{{ single_blog.description|slice:":200" }}</p>
+          <a href="{{ single_blog.get_absolute_url }}" class="btn btn-transparent">read more</a>
+        </article>
+      </div>
+      	{% endfor %}
+     {% else %}
+     	<div class="alert alert-danger">Sorry no latest blogs found</div>
+     {% endif %} 
+      
+    </div>
+<!-- {% if latest_blogs.has_other_pages %}    
+<div class="row">
+      <div class="col-12">
+        <nav>
+          <ul class="pagination justify-content-center align-items-center">
+          	{% if latest_blogs.has_previous %}
+            <li class="page-item">
+            	<a href="?page={{ latest_blogs.previous_page_number }}">
+            		<span class="page-link">&laquo; Previous</span>
+            	</a>
+            </li>
+            {% else %}
+            <li class="disabled"><span class="page-link">&laquo; Previous</span></li>
+    		{% endif %}
+    		{% for i in latest_blogs.paginator.page_range %}
+    			{% if latest_blogs.number == i %}
+    				<li class="page-item active">
+              <span class="page-link">{{ i }}</span>
+            </li>
+    			{% else %}
+    				<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+    			{% endif %}
+    		{% endfor %}
+            {% if latest_blogs.has_next %}
+            	<li class="page-item">
+              <a class="page-link" href="?page={{ latest_blogs.next_page_number }}">Next &raquo;</a>
+            </li>
+            {% else %}
+            <li class="disabled"><span class="page-link">Next &raquo;</span></li>
+            {% endif %}
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+ {% endif %} -->
+    
+
+
+
+  </div>
+</section>
+<!-- /blog post -->
+{% endblock %}
